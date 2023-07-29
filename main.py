@@ -59,24 +59,7 @@ async def on_error(ctx, error):
             icon_url=f"{icon}"
         )
         traceback.print_exception()
-@bot.command(help="This is the help command, it shows all the commands.")
-async def help(ctx):
-    all_commands = bot.commands
-    command_list = ([f"{command.name}: {command.help}" for command in all_commands])
-    unpacked = "\n".join(command_list)
 
-    helpcmds = discord.Embed(
-        title=f"Help & all commands!",
-        description=f"The commands are ($): \n{unpacked}",
-        color=discord.Colour.random()
-    )
-    helpcmds.add_field(name="Usage", value="To use the bot, simply put a $ in front of the command. (ex $help, $rules)", inline= False)
-    helpcmds.set_author(
-        name=f"{botname}",
-        icon_url=f"{icon}"
-    )
-    helpcmds.set_footer(text="created by dionednrg")
-    await ctx.send(embed=helpcmds)
 @bot.command(help="Shows rules for the server.")
 async def rules(ctx):
     rules = discord.Embed(
@@ -102,7 +85,7 @@ async def konodioda(ctx, member: discord.Member = None):
         avatar_bytes = await member.avatar.read()
 
         # Open the background image on which you want to put the avatar
-        background_image = Image.open("background_image.png")
+        background_image = Image.open("images/background_image.png")
 
         # Open the avatar image from the bytes
         avatar_image = Image.open(io.BytesIO(avatar_bytes))
@@ -126,7 +109,10 @@ async def konodioda(ctx, member: discord.Member = None):
         # Clean up temporary image files (optional)
         background_image.close()
         avatar_image.close()
+        os.remove(final_image_path)
+
     except Exception as e:
+        traceback.print_exc()
         errorEmbed = discord.Embed(
             title="Error!",
             description="An error occured!",
@@ -137,7 +123,7 @@ async def konodioda(ctx, member: discord.Member = None):
             icon_url=f"{icon}"
         )
         await ctx.send(embed=errorEmbed)
-        traceback.print_exception()
+        
 
 @bot.command(help="you get to finger someone :point_right:")
 async def star_finger(ctx, member: discord.Member = None):
