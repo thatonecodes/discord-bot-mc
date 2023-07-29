@@ -11,6 +11,7 @@ import datetime
 import base64
 import os
 
+
 intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix='$', intents=intents)
@@ -245,9 +246,11 @@ async def stand(ctx):
 #minecraft
 @bot.command()
 async def map(ctx):
+    #map is going to be preset image
     pass
 @bot.command()
 async def find_player(ctx):
+    #find player using custom map in server (mod)
     pass
 @bot.command(help="Get a minecraft player's skin!")
 async def skin(ctx, player):
