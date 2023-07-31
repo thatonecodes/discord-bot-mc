@@ -24,22 +24,30 @@ class MinecraftServer(commands.Cog):
             if "ip" in data and "port" in data:
                 ip_address = data["ip"]
                 port = data["port"]
-                players_online = data["players"]["online"]
-                player_info = "No players online"
-                max_players = data["players"]["max"]
-                version = data["version"]
+                players_online = "No players online"
+                max_players = "60"
                 is_online = data["online"]
-                if icon is not None:
+                version = "1.19.2"
+                software = "Forge"
+                information = "None"
+                image_icon = ""
+                ping = data["debug"]["ping"]
+                if is_online is not False:
+                    version = data["version"]
+                    players_online = data["players"]["online"]
+                    max_players = data["players"]["max"]
                     image_icon = data["icon"]
 
-                base64_data = image_icon.replace("data:image/png;base64,", "")
+                    base64_data = image_icon.replace("data:image/png;base64,", "")
 
-                # Decode Base64 and create an image from it
-                image_data = base64.b64decode(base64_data)
-                image = Image.open(io.BytesIO(image_data))
+                    # Decode Base64 and create an image from it
+                    image_data = base64.b64decode(base64_data)
+                    image = Image.open(io.BytesIO(image_data))
 
-                image_path = "decoded_image.png"
-                image.save(image_path)
+                    image_path = "decoded_image.png"
+                    image.save(image_path)
+
+                    information = data["motd"]["clean"]
 
                 if "software" in data:
                     software = data["software"]
@@ -47,7 +55,7 @@ class MinecraftServer(commands.Cog):
                 else:
                     software = "Unknown"
 
-                information = data["motd"]["clean"]
+                
 
                 minecraft_embed = discord.Embed(
                     title=f"Minecraft Server Information for {ip}",
@@ -56,6 +64,7 @@ class MinecraftServer(commands.Cog):
                     Version: {version}
                     Online: {is_online}
                     Software: {software}
+                    Ping: {ping}
                     Description: {' '.join(str(i) for i in information)}""",
                     color=discord.Colour.random()
                 )
@@ -64,11 +73,15 @@ class MinecraftServer(commands.Cog):
                     icon_url=icon
                 )
                 minecraft_embed.set_footer(text="credit to mcsrvstat for the API")
-                with open(image_path, "rb") as f:
-                    picture = discord.File(f)
-                    await ctx.send(file=picture)
+                if image_icon is not "":
+                    with open(image_path, "rb") as f:
+                        picture = discord.File(f)
+                        await ctx.send(file=picture)
+                        await ctx.send(embed=minecraft_embed)
+                    os.remove(image_path)
+                else:
+                    await ctx.send("No Icon or offline.")
                     await ctx.send(embed=minecraft_embed)
-                os.remove(image_path)
 
         except KeyError:
             traceback.print_exc()
