@@ -23,7 +23,7 @@ class Rules(commands.Cog):
         )
             await ctx.send(image)
             await ctx.send(embed=rules)
-            
+
         except Exception as e:
             print("bruh")
 
