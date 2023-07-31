@@ -27,4 +27,4 @@ class Kicker(commands.Cog):
             traceback.print_exc()
 
 async def setup(bot):
-    bot.add_cog(Kicker(bot))
+    await bot.add_cog(Kicker(bot))

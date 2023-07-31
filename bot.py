@@ -7,6 +7,7 @@ import asyncio
 import traceback
 
 
+
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
 
@@ -28,10 +29,11 @@ async def on_command_error(ctx, error):
             icon_url=f"{icon}"
         )
         await ctx.send(embed=notfound)
-
+    
 
 
 async def loader():
+    
     extensions = []
     for filename in os.listdir("./cogs"):
         if filename.endswith(".py"):
@@ -43,6 +45,8 @@ async def loader():
                 try:
                     await bot.load_extension(i)
                     print(f"Loaded cog: {i}")
+                except discord.ext.commands.errors.ExtensionAlreadyLoaded:
+                    pass
                 except Exception as e:
                     print("ERROR")
                     traceback.print_exc()

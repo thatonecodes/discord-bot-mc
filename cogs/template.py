@@ -1,14 +1,14 @@
 import discord
 from discord.ext import commands
 
-class Template(commands.Cog):
+class template(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
     @commands.command()
-    async def bruh():
-        print("bruh")
+    async def template(self, ctx):
+        await ctx.send("test")
 
 
 async def setup(bot):
-    await bot.add_cog(Template(bot))
+    await bot.add_cog(template(bot))
