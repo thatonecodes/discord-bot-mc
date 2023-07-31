@@ -3,3 +3,6 @@ __pycache__
 .png
 .jpeg
 config.py
+create_cogs.py
+.vscode
+settings.json 
