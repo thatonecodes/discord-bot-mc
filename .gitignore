@@ -6,3 +6,4 @@ config.py
 create_cogs.py
 .vscode
 settings.json 
+main.py
