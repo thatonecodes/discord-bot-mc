@@ -73,7 +73,7 @@ class MinecraftServer(commands.Cog):
                     icon_url=icon
                 )
                 minecraft_embed.set_footer(text="credit to mcsrvstat for the API")
-                if image_icon is not "":
+                if image_icon != "":
                     with open(image_path, "rb") as f:
                         picture = discord.File(f)
                         await ctx.send(file=picture)
