@@ -7,6 +7,7 @@ from PIL import Image
 import traceback
 from config import icon, botname, minecraftserverip, minecraftserverport
 import os
+import textwrap
 
 
 class MinecraftServer(commands.Cog):
@@ -24,7 +25,7 @@ class MinecraftServer(commands.Cog):
             if "ip" in data and "port" in data:
                 ip_address = data["ip"]
                 port = data["port"]
-                players_online = "No players online"
+                players_online = "No players online. Server Offline."
                 max_players = "60"
                 is_online = data["online"]
                 version = "1.19.2"
@@ -32,11 +33,17 @@ class MinecraftServer(commands.Cog):
                 information = "None"
                 image_icon = ""
                 ping = data["debug"]["ping"]
+                player_list_unpacked = "Server Offline."
                 if is_online is not False:
                     version = data["version"]
                     players_online = data["players"]["online"]
                     max_players = data["players"]["max"]
                     image_icon = data["icon"]
+                    player_list = "No players Online"
+                    player_list_unpacked = "No players online."
+                    if players_online != 0:
+                        player_list = data["players"]["list"]
+                        player_list_unpacked = " ".join(str(f) for f in player_list)
 
                     base64_data = image_icon.replace("data:image/png;base64,", "")
 
@@ -53,19 +60,22 @@ class MinecraftServer(commands.Cog):
                     software = data["software"]
 
                 else:
-                    software = "Unknown"
-
-                
-
-                minecraft_embed = discord.Embed(
-                    title=f"Minecraft Server Information for {ip}",
-                    description=f"""Server IP: {ip_address}:{port}
+                    software = "Forge (default)"
+                description_triple = f"""
+                    Server IP: {ip_address}:{port}
                     Players Online: {players_online}/{max_players}
+                    Player List: {player_list_unpacked}
                     Version: {version}
                     Online: {is_online}
                     Software: {software}
                     Ping: {ping}
-                    Description: {' '.join(str(i) for i in information)}""",
+                    Description: {' '.join(str(i) for i in information)}"""
+                description_dedent =textwrap.dedent(description_triple)
+                
+
+                minecraft_embed = discord.Embed(
+                    title=f"Minecraft Server Information for {ip}",
+                    description= description_dedent,
                     color=discord.Colour.random()
                 )
                 minecraft_embed.set_author(
@@ -91,6 +101,7 @@ class MinecraftServer(commands.Cog):
         except Exception as e:
             traceback.print_exc()
             print("Error occurred while fetching server information.")
+            await ctx.send("error..")
 
 async def setup(bot):
     await bot.add_cog(MinecraftServer(bot))

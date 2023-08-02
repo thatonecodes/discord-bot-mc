@@ -54,7 +54,7 @@ class MinecraftPinger(commands.Cog):
                  traceback.print_exc()
 
 
-
+        @commands.has_permissions(manage_messages = True)
         @commands.command()
         async def pingserver(self, ctx):
             try:

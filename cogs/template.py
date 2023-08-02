@@ -1,13 +1,15 @@
 import discord
 from discord.ext import commands
+from discord import app_commands
 
 class template(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command()
-    async def template(self, ctx):
-        await ctx.send("test")
+    @app_commands.command(name="template", description="description")
+    async def template(self,interaction: discord.Interaction):
+        await interaction.response.send_message("command")
+
 
 
 async def setup(bot):
