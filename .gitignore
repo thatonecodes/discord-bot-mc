@@ -7,3 +7,6 @@ create_cogs.py
 .vscode
 settings.json 
 main.py
+test.json
+screenshot.png
+screenshot2.png
