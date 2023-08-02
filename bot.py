@@ -1,7 +1,7 @@
 from discord.ext import commands
 import discord
 import config
-from config import botname, icon
+from config import botname, icon, defaultgulidID
 import os
 import asyncio
 import traceback
@@ -14,7 +14,10 @@ bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
 
 @bot.event
 async def on_ready():
+    synced = await bot.tree.sync()
+    print(f"Synced {len(synced)} command(s).")
     print(f"We have logged in as {bot.user}")
+    
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -29,6 +32,29 @@ async def on_command_error(ctx, error):
             icon_url=f"{icon}"
         )
         await ctx.send(embed=notfound)
+    if isinstance(error, commands.MissingPermissions):
+        notfound = discord.Embed(
+            title="Missing Permissions! :angry:",
+            description="You do not have the permissions to run this command.",
+            color=discord.Color.red()
+        )
+        notfound.set_author(
+            name=f"{botname}",
+            icon_url=f"{icon}"
+        )
+        await ctx.send(embed=notfound)
+    if isinstance(error, commands.MissingRequiredArgument):
+        notfound = discord.Embed(
+            title="Missing argument! :neutral_face:",
+            description="You did not include a required argument. Please try again!",
+            color=discord.Color.red()
+        )
+        notfound.set_author(
+            name=f"{botname}",
+            icon_url=f"{icon}"
+        )
+        await ctx.send(embed=notfound)
+    
     
 
 
