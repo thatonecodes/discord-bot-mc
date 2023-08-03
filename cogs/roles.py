@@ -11,13 +11,13 @@ class ReactionRoles(commands.Cog):
         try:
             MAIN_GUILD = self.bot.get_guild(defaultgulidID)  # Use default guild id
             roles = MAIN_GUILD.roles
-            role1 = discord.utils.get(roles, name="gigachad clan")
-            role2 = discord.utils.get(roles, name="the duhjer clan")
+            role2 = discord.utils.get(roles, name="the vincent clan")
+            role1 = discord.utils.get(roles, name="the duhjer clan")
             role3 = discord.utils.get(roles, name="the anti-duhjer clan")
             role4 = discord.utils.get(roles, name="neutral")
             messageembed = discord.Embed(
                 title="Role Reactions :boom:",
-                description="""If you'd like to join a team, react to one of the emojis, down below, starting with\n gigachad clan: :sunglasses: | the duhjer clan :grimacing: | the anti-duhjer clan :white_check_mark: | neutral :flag_ch:""",
+                description="""If you'd like to join a team, react to one of the emojis, down below, starting with\n vincent clan: :sunglasses: | the duhjer clan :grimacing: | the anti-duhjer clan :white_check_mark: | neutral :flag_ch:""",
                 color=discord.Colour.random()
             )
             messageembed.set_author(

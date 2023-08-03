@@ -12,6 +12,7 @@ class PeaceTimer(commands.Cog):
         self.time = datetime.now(self.tz) 
         self.countdown_time = 0
         self.countdown_task = None
+        self.warmode = False
 
     @commands.has_permissions(administrator=True)
     @commands.command()
@@ -24,7 +25,7 @@ class PeaceTimer(commands.Cog):
             if int(seconds) <= 0:
                 await ctx.send("Please enter a positive number for the countdown.")
                 return
-            
+
             self.countdown_time = int(seconds)
             message = await ctx.send(f"Countdown started for {self.countdown_time} seconds!")
                 
@@ -54,22 +55,39 @@ class PeaceTimer(commands.Cog):
             if self.countdown_time > 3600:
                 hours = self.countdown_time // 3600
                 editor = await ctx.send(f"In hours: about {hours} hours")
-            for i in range(self.countdown_time, 0, -1):
-                self.countdown_time = i
-                await asyncio.sleep(1)
-                if self.countdown_time > 3600:
-                    hours = self.countdown_time // 3600
-                    hours_remaining = self.countdown_time // 3600
-                    await editor.edit(content=f"Hours: {hours_remaining}")
-                await message.edit(content=f"Countdown: {i} seconds!")
+                first_time = True
+                while self.countdown_time > 0:
+                    minutes, seconds = divmod(self.countdown_time, 60)
+                    hours, minutes = divmod(minutes, 60)
+                    if first_time:
+                        await message.edit(content = f"Countdown has started. Counting down from {hours}h {minutes}m and {seconds}s.")
+                        first_time = False
+                    if self.countdown_time > 3600:
+                        # Update editor message with remaining hours
+                        await editor.edit(content=f"In hours: about {hours} hours")
+                    
+                    await message.edit(content=f"Countdown: {hours}h {minutes}m {seconds}s (will iterate every 60 seconds)")
+                    
+                    await asyncio.sleep(60)
+                    self.countdown_time -= 60
               
             await message.edit(content="Countdown finished!")
-            await self.pingall(ctx)  
+            await self.pingall(ctx)
+            self.warmode = True  
         except asyncio.CancelledError:
             # This exception will be raised when the countdown is cancelled
             pass
         except Exception as e:
             print("Error ", e)
+
+    @commands.command()
+    async def declarewar(self, ctx, member: str):
+        if "@" in member:
+            await ctx.send(f"A war declaration has been made on one of the clans! User {ctx.author.mention} has declared war on {member}")
+            allowed_mentions = discord.AllowedMentions(everyone = True)
+            await ctx.send(content = "@everyone", allowed_mentions = allowed_mentions)
+        else:
+            await ctx.send("Mention a clan to go to war with them!")
 
     @commands.has_permissions(moderate_members=True)
     @commands.command()
