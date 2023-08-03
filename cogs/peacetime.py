@@ -82,12 +82,21 @@ class PeaceTimer(commands.Cog):
 
     @commands.command()
     async def declarewar(self, ctx, member: str):
-        if "@" in member:
-            await ctx.send(f"A war declaration has been made on one of the clans! User {ctx.author.mention} has declared war on {member}")
-            allowed_mentions = discord.AllowedMentions(everyone = True)
-            await ctx.send(content = "@everyone", allowed_mentions = allowed_mentions)
+        if self.warmode == True:
+            if "@" in member:
+                await ctx.send(f"A war declaration has been made on one of the clans! User {ctx.author.mention} has declared war on {member}")
+                allowed_mentions = discord.AllowedMentions(everyone = True)
+                await ctx.send(content = "@everyone", allowed_mentions = allowed_mentions)
+            else:
+                await ctx.send("Mention a clan to go to war with them!")
         else:
-            await ctx.send("Mention a clan to go to war with them!")
+            await ctx.send("Warmode is not active!")
+
+    @commands.has_permissions(administrator=True)
+    @commands.command()
+    async def warmodeactive(self, ctx):
+        self.warmode = True
+        await ctx.send("Command success.")
 
     @commands.has_permissions(moderate_members=True)
     @commands.command()
