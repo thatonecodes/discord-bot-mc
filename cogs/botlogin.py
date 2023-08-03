@@ -84,10 +84,24 @@ class BotLogin(commands.Cog):
             elif self.botloggedin != True:
                 await ctx.send("Cannot run this command without $botlogin!")
                 return
-                
+        except Exception as e:
+            print("error, exepction", e)
 
+    @commands.has_permissions(administrator = True)
+    @commands.command()             
+    async def consolecommand(self, ctx, command: str):
+        try:
+            if self.botloggedin is True:
+                consolearea = self.driver.find_element(By.ID, "command")
+                consolearea.send_keys(f"{command}")
+                consolearea.send_keys(Keys.ENTER)
+                await ctx.send("Sent command to console!")
+            elif self.botloggedin != True:
+                await ctx.send("Cannot run this command without $botlogin!")
+                return
         except Exception as e:
             print("ERROR Excecptions ", e)
+            
     @commands.has_permissions(administrator = True)
     @commands.command() 
     async def console(self, ctx):
