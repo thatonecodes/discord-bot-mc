@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 import asyncio
 from config import botname, icon
+import traceback
 
 class PeaceTimer(commands.Cog):
     def __init__(self, bot):
@@ -79,6 +80,26 @@ class PeaceTimer(commands.Cog):
             pass
         except Exception as e:
             print("Error ", e)
+    @commands.command()
+    async def checkwarmode(self, ctx):
+        await ctx.send(f"IS warmode active: {self.warmode}")
+
+    @commands.has_permissions(administrator=True)
+    @commands.command()
+    async def declarewaroverrule(self, ctx, member: str , user: discord.Role = None):
+            if self.warmode == True:
+                if "@" in member:
+                    try:
+                        await ctx.send(f"A war declaration has been overruled and made on one of the clans! User {member} has declared war on {user.mention}")
+                    except Exception:
+                        traceback.print_exc()
+                        await ctx.send("Mention a real clan role.")
+                    allowed_mentions = discord.AllowedMentions(everyone = True)
+                    await ctx.send(content = "@everyone", allowed_mentions = allowed_mentions)
+                else:
+                    await ctx.send("Mention a clan to go to war with them!")
+            else:
+                await ctx.send("Warmode is not active!")
 
     @commands.command()
     async def declarewar(self, ctx, member: str):
@@ -96,7 +117,13 @@ class PeaceTimer(commands.Cog):
     @commands.command()
     async def warmodeactive(self, ctx):
         self.warmode = True
-        await ctx.send("Command success.")
+        await ctx.send(f"Command success. Warmode set to {self.warmode}")
+
+    @commands.has_permissions(administrator=True)
+    @commands.command()
+    async def warmodeoff(self,ctx):
+        self.warmode = False
+        await ctx.send(f"Command success. Warmode set to {self.warmode}")
 
     @commands.has_permissions(moderate_members=True)
     @commands.command()
@@ -131,11 +158,8 @@ class PeaceTimer(commands.Cog):
             else:
                 await ctx.send(embed=messageembed)
             
-            while self.countdown_time > 0:
-                    
-                    await asyncio.sleep(1)
-            if self.countdown_time != 0:
-                await ctx.send("Peace time is now active!")
+            if self.countdown_time > 0:
+                await ctx.send("Warmode is active, peace time is off!")
         except TypeError:
             pass
         except Exception as e:
