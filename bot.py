@@ -17,7 +17,7 @@ async def on_ready():
     synced = await bot.tree.sync()
     print(f"Synced {len(synced)} command(s).")
     print(f"We have logged in as {bot.user}")
-    
+
 
 @bot.event
 async def on_command_error(ctx, error):

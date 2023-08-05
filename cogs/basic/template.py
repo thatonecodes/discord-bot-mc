@@ -6,7 +6,7 @@ class template(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    @app_commands.command(name="template", description="description", category="basic")
+    @app_commands.command(name="template", description="description")
     async def template(self,interaction: discord.Interaction):
         await interaction.response.send_message("command")
 
