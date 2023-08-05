@@ -61,16 +61,18 @@ async def on_command_error(ctx, error):
 async def loader():
     
     extensions = []
-    for filename in os.listdir("./cogs"):
-        if filename.endswith(".py"):
-            cog_name = filename[:-3]  # Remove the ".py" extension
-            cog_path = f"cogs.{cog_name}"
-            extensions.append(cog_path)
-            print(extensions[0])
-            for i in extensions:
+    for dirpath, dirnames, filenames in os.walk("./cogs"):
+        for filename in filenames:
+            if filename.endswith(".py"):
+                cog_name = filename[:-3]  # Remove the ".py" extension
+                if dirpath == "./cogs":
+                    cog_path = f"cogs.{cog_name}"
+                else:
+                    rel_dir = os.path.relpath(dirpath, "./cogs")
+                    cog_path = f"cogs.{rel_dir.replace('/', '.')}.{cog_name}"
                 try:
-                    await bot.load_extension(i)
-                    print(f"Loaded cog: {i}")
+                    await bot.load_extension(cog_path)
+                    print(f"Loaded cog: {cog_path}")
                 except discord.ext.commands.errors.ExtensionAlreadyLoaded:
                     pass
                 except Exception as e:
