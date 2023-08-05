@@ -27,21 +27,20 @@ class Helper(commands.Cog):
             #get PEACETIME CMDS
             rules_cog = bot.get_cog("PeaceTimer")
             commands_list = rules_cog.get_commands()
-            admin_commands = ["$declarewaroverrule", "$warmodeactive", "$warmodeoff", "$aborttimer"]
+            admin_commands = ["$peacetimereset", "$declarewaroverrule", "$warmodeactive", "$warmodeoff", "$aborttimer", "$settimer"]
             for command in commands_list:
                 peacetimecmds.append(f"${command}")
-                print(command)
+                
             for command_name in admin_commands:
                 if command_name in peacetimecmds:
                     peacetimecmds = [f"{command} (Admin Command)" if command in admin_commands else f"{command}" for command in peacetimecmds]
-                    print(peacetimecmds)
                             
             #get BOTLOGIN CMDS
             automation_cog = bot.get_cog("BotLogin")
             automation_command_name = automation_cog.get_commands()
             for commands in automation_command_name:
                 automationcmds.append(f"${commands}")
-                print(command)
+
 
 
             for _, _, filenames in os.walk("./cogs/moderation"):
@@ -49,21 +48,21 @@ class Helper(commands.Cog):
                     if filename.endswith(".py"):
                         moderation_filename = filename[:-3]
                         moderationcommands.append(f"${moderation_filename}")
-                        print(moderationcommands)
+
 
             for _, _, filenames in os.walk("./cogs/fun"):
                 for filename in filenames:
                     if filename.endswith(".py"):
                         fun_filename = filename[:-3]
                         funcommands.append(f"${fun_filename}")
-                        print(funcommands)
+
 
             for _, _, filenames in os.walk("./cogs/basic"):
                 for filename in filenames:
                     if filename.endswith(".py"):
                         basic_name = filename[:-3]
                         basiccommands.append(f"${basic_name}")
-                        print(basiccommands)
+
 
             for _, _, filenames in os.walk("./cogs/minecraft"):
                 for filename in filenames:
@@ -72,7 +71,7 @@ class Helper(commands.Cog):
                         minecraftcommands.append(f"${basic_name}")
                         if "$peacetime".lower() in minecraftcommands:
                             minecraftcommands.remove("$peacetime")
-                        print(minecraftcommands)
+
                     
                 
 
