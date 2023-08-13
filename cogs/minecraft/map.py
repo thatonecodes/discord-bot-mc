@@ -1,13 +1,16 @@
 import discord
 from discord.ext import commands
-
-class Template(commands.Cog):
+from config import mapimagelink, maplink
+class Mapper(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
     @commands.command()
-    async def example_command(self, ctx):
-        await ctx.send('This is an example command!')
+    async def map(self, ctx):
+        image = mapimagelink
+        maplinker = f"The link to access the dynmap is: {maplink}"
+        await ctx.send(maplinker)
+        await ctx.send(image)
 
 async def setup(bot):
-    await bot.add_cog(Template(bot))
+    await bot.add_cog(Mapper(bot))
