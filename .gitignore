@@ -11,3 +11,6 @@ test.json
 screenshot.png
 screenshot2.png
 example.png
+*.venv
+test/
+.DS_Store
