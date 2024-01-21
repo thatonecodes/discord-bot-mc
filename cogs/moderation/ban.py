@@ -8,7 +8,7 @@ class Banner(commands.Cog):
     
     @commands.command()
     @commands.has_permissions(ban_members = True)
-    async def ban(ctx, member : discord.Member,*, reason = None):
+    async def ban(self, ctx, member : discord.Member,*, reason = None):
         try:
             if member == None:
                 await ctx.send("Select a user! (ex. $ban @user)!") 

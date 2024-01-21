@@ -8,7 +8,7 @@ class Kicker(commands.Cog):
     
     @commands.command()
     @commands.has_permissions(kick_members=True)
-    async def kick(ctx, member: discord.Member, *, reason=None):
+    async def kick(self, ctx, member: discord.Member, *, reason=None):
         try:
             if member == None:
                 await ctx.send("Select a user! (ex. $kick @user)!") 
